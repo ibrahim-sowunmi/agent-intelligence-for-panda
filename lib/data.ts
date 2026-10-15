@@ -331,10 +331,23 @@ export const scenarios = {
 
 export type ScenarioName = keyof typeof scenarios;
 
-// Recording of Chelsea talking to a Panda AI agent. Fill in the transcript to
-// show the "Show transcript" toggle.
+// Recording of Chelsea talking to a Panda AI agent, with the cleaned transcript.
 export const chelseaCall = {
   src: "/audio/chelsea-panda-agent.m4a",
   durationS: 97,
-  transcript: [] as { speaker: "Chelsea" | "Agent"; text: string }[],
+  transcript: [
+    { speaker: "Agent", text: "Hi there, how can I help you today?" },
+    { speaker: "Chelsea", text: "Hi, I'm wondering what I can put in my recycling bin." },
+    { speaker: "Agent", text: "For dry mixed recycling, you can put clean, dry recyclables like plastic, glass, paper, cardboard, metals, cans, tins, foil, cartons, and Tetra Paks." },
+    { speaker: "Chelsea", text: "Okay, thanks. And what can't go into the bin?" },
+    { speaker: "Agent", text: "For your general waste bin, items that can't be recycled like plastics, polystyrene, floor sweepings, and packaging shouldn't go in there." },
+    { speaker: "Chelsea", text: "Um, what about tree branches?" },
+    { speaker: "Agent", text: "I don't have specific info on tree branches for the recycling bin, but if you're doing a garden project, you can put garden waste in one of our skips." },
+    { speaker: "Chelsea", text: "Okay, what about my compost bin?" },
+    { speaker: "Agent", text: "I don't have specific information about compost bins in our system. Are you asking about a Panda-provided compost bin, or is this a general question?" },
+    { speaker: "Chelsea", text: "A general question." },
+    { speaker: "Agent", text: "I can only help with questions about Panda Recycling's services and bins, so I wouldn't be able to advise on general composting. Is there anything else about our waste or recycling services I can help with?" },
+    { speaker: "Chelsea", text: "What time can you collect the bin?" },
+    { speaker: "Agent", text: "I can look into that for you. Could you give me your Panda account number or your business postcode so I can find your account?" },
+  ] as { speaker: "Chelsea" | "Agent"; text: string }[],
 };
