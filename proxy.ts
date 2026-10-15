@@ -13,6 +13,7 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Everything except the login page, the auth routes, and the assets the login page needs.
-  matcher: ["/((?!login|api/auth|_next/static|_next/image|brand/|favicon.ico).*)"],
+  // Everything except the login page, the auth routes, the assets the login page
+  // needs, and the social card (so link previews render).
+  matcher: ["/((?!login|api/auth|_next/static|_next/image|brand/|favicon.ico|opengraph-image).*)"],
 };

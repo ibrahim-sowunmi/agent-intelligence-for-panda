@@ -5,7 +5,7 @@ import { AopCard } from "@/components/platform/aop-card";
 import { tiers, TIER_COLOR } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Decagon platform · Panda × Decagon",
+  title: "Decagon platform",
 };
 
 const ENGINE = [

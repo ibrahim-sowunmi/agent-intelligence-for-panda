@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { LoginForm } from "./login-form";
 
-export const metadata: Metadata = { title: "Sign in · Agent Intelligence for Panda" };
+// Link previews land here (the rest of the site is behind the password),
+// so this page keeps the site-wide title and card.
+export const metadata: Metadata = { title: { absolute: "Agent Intelligence for Panda" } };
 
 export default function LoginPage() {
   return (
