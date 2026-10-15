@@ -13,7 +13,7 @@ export default function LoginPage() {
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-panda-deep">Private report</p>
           <h1 className="mt-4 font-display text-3xl font-semibold text-forest">Agent Intelligence for Panda</h1>
           <p className="mt-3 leading-relaxed text-ink-2">
-            Enter your work email and we&apos;ll send you a sign-in link. Open to decagon.ai and pandarecycling.co.uk addresses.
+            Enter the password you were given to open the report.
           </p>
           <Suspense>
             <LoginForm />
