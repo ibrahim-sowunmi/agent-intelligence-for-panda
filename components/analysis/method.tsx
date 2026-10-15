@@ -1,5 +1,5 @@
 import { Reveal } from "@/components/ui";
-import { measured, read } from "@/lib/data";
+import { measured } from "@/lib/data";
 
 const ROWS = [
   {
@@ -12,12 +12,12 @@ const ROWS = [
     tag: "Inferred",
     color: "bg-white text-forest ring-1 ring-line",
     source: "Read from the conversations",
-    body: `What each call was about, and whether an AI agent could have finished it. Every inbound call read in full by an AI reviewer; ${read.secondRead} read a second time by a stronger model, agreeing on the job ${read.processAgreementPct}% of the time, with tiers corrected per process.`,
+    body: "What each call was about, and whether an AI agent could have finished it. Every inbound call read in full by an AI reviewer.",
   },
   {
     tag: "Assumed",
     color: "bg-white text-forest ring-1 ring-[#f3d3c4]",
-    source: "Our judgement, with the arithmetic",
+    source: "Our judgement, based on experience",
     body: "The containment rates behind each scenario, and the largest of them all: whether four residential queues over five weeks speak for the whole contact centre.",
   },
 ];

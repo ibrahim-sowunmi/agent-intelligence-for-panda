@@ -2,6 +2,9 @@ import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_COOKIE, verify } from "@/lib/auth";
 
 export async function proxy(request: NextRequest) {
+  // The magic-link gate is opt-in: without AUTH_SECRET the site is open.
+  if (!process.env.AUTH_SECRET) return NextResponse.next();
+
   const email = await verify(request.cookies.get(SESSION_COOKIE)?.value, "session");
   if (email) return NextResponse.next();
 

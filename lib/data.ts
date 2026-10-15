@@ -330,3 +330,11 @@ export const scenarios = {
 } as const;
 
 export type ScenarioName = keyof typeof scenarios;
+
+// Recording of Chelsea talking to a Panda AI agent. Fill in the transcript to
+// show the "Show transcript" toggle.
+export const chelseaCall = {
+  src: "/audio/chelsea-panda-agent.m4a",
+  durationS: 97,
+  transcript: [] as { speaker: "Chelsea" | "Agent"; text: string }[],
+};
