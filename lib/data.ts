@@ -1,7 +1,11 @@
-// Every figure on the site comes from the Panda Talkdesk transcript export
-// (2 Jan to 4 Feb 2026). Measured figures cover all 6,738 calls. Process and
-// tier figures come from reading every inbound call in full, with 400 calls
-// read a second time to check and correct the tiering.
+// Every figure on the site comes from two samples of Panda's own calls:
+// the Talkdesk transcript export (2 Jan to 4 Feb 2026, 6,738 calls) and the
+// call recordings (13 to 15 Oct 2026, 2,991 calls). Every inbound call in both
+// was read in full; 400 Jan-Feb calls and 160 October calls were read a second
+// time by a stronger model to check the tiering. Process and tier figures below
+// combine both samples from their call counts.
+
+import { october } from "./october";
 
 export type Tier = "A" | "B" | "C";
 
@@ -39,7 +43,8 @@ export const measured = {
   ],
 };
 
-export const read = {
+// Jan-Feb reading only. The combined figures are `read` further down.
+export const readJan = {
   withRequest: 5657,
   secondRead: 400,
   processAgreementPct: 90,
@@ -65,7 +70,8 @@ export type Process = {
   example: string;
 };
 
-export const processes: Process[] = [
+// Jan-Feb sample, as read from the Talkdesk transcripts.
+export const processesJan: Process[] = [
   {
     key: "price_review",
     label: "Plan & price review",
@@ -250,6 +256,134 @@ export const processes: Process[] = [
   },
 ];
 
+// Jan-Feb sample only.
+export const tiersJan = [
+  { tier: "A" as Tier, pct: 40, calls: 2253 },
+  { tier: "B" as Tier, pct: 21, calls: 1215 },
+  { tier: "C" as Tier, pct: 39, calls: 2189 },
+];
+
+const TIER_COPY: {
+  tier: Tier;
+  title: string;
+  body: string;
+  extra?: string[];
+  review?: string;
+}[] = [
+  {
+    tier: "A",
+    title: "Voice AI contains it end to end",
+    body: "",
+  },
+  {
+    tier: "B",
+    title: "AI takes the intake and the standard case",
+    body: "The AI runs the standard steps and one part goes to a person: an operations check or booking it can't see, paperwork, consent, or a bereaved caller.",
+  },
+  {
+    tier: "C",
+    title: "Agent intake, then human-led",
+    body: "The AI verifies the caller and gathers the account, usage and contract end date, then a person makes the call on rates, credits, price-matches and save offers.",
+    extra: ["Free months to win a prospect"],
+    review:
+      "Provisional. How much of Tier C is a genuine price decision, and how much the agent could resolve itself, is open for review. We will work through where each intent sits with Panda once we have full data and API access.",
+  },
+];
+
+// ---- Combined: Jan-Feb transcripts + October recordings -------------------
+
+type OctProcess = { calls: number; A: number; B: number; C: number; priceDecision: number; transferred: number; medianSecs: number };
+const octProc = october.counts.processes as Record<string, OctProcess>;
+const oct = october.counts;
+
+// Round percentages so they still add to 100.
+function roundTo100(values: number[]) {
+  const total = values.reduce((a, b) => a + b, 0) || 1;
+  const raw = values.map((v) => (v / total) * 100);
+  const out = raw.map(Math.floor);
+  let left = 100 - out.reduce((a, b) => a + b, 0);
+  raw
+    .map((v, i) => [v - Math.floor(v), i] as const)
+    .sort((a, b) => b[0] - a[0])
+    .forEach(([, i]) => {
+      if (left > 0) { out[i] += 1; left -= 1; }
+    });
+  return out;
+}
+
+const withRequest = readJan.withRequest + oct.inboundReal;
+const TIERS: Tier[] = ["A", "B", "C"];
+
+export type CombinedProcess = Process & { callsJan: number; callsOct: number; medianMinOct: number };
+
+export const processes: CombinedProcess[] = processesJan
+  .map((p) => {
+    const o = octProc[p.key] ?? { calls: 0, A: 0, B: 0, C: 0, priceDecision: 0, transferred: 0, medianSecs: 0 };
+    const calls = p.calls + o.calls;
+    const counts = TIERS.map((t, i) => (p.calls * p.mix[i]) / 100 + o[t]);
+    const mix = roundTo100(counts) as [number, number, number];
+    return {
+      ...p,
+      calls,
+      callsJan: p.calls,
+      callsOct: o.calls,
+      share: Math.round((calls / withRequest) * 1000) / 10,
+      mix,
+      tier: TIERS[counts.indexOf(Math.max(...counts))],
+      handoffPct: Math.round(((p.calls * p.handoffPct) / 100 + o.transferred) / calls * 100),
+      priceDecisionPct: Math.round(((p.calls * p.priceDecisionPct) / 100 + o.priceDecision) / calls * 100),
+      medianMinOct: Math.round(o.medianSecs / 6) / 10,
+    };
+  })
+  .sort((a, b) => b.share - a.share);
+
+const tierCalls = Object.fromEntries(tiersJan.map((t) => [t.tier, t.calls + oct.tier[t.tier]])) as Record<Tier, number>;
+const tierPct = roundTo100(TIERS.map((t) => tierCalls[t]));
+
+const INCLUDE: Record<string, string> = {
+  price_review: "Plan and price reviews",
+  quote: "Price quotes and coverage",
+  cancel_move: "Closing an account",
+  signup: "New household sign-ups",
+  pay: "Card payments and arrears",
+  billing_dispute: "Disputes, refunds and complaints",
+  tenancy: "House moves and new holders",
+  cancel_switch: "Cancelling to switch provider",
+  admin: "Balance, bills and direct debit",
+  delivery: "New-customer bin delivery",
+  missed: "Missed collections",
+  returned_call: "Returned calls",
+  bereavement: "Bereavement",
+  binchange: "Bin repairs and swaps",
+};
+
+const priceKeys = ["price_review", "cancel_switch"];
+const priceOct = priceKeys.map((k) => octProc[k]).filter(Boolean);
+const priceConversations = Math.round(readJan.priceConversations + priceOct.reduce((a, o) => a + o.calls, 0));
+const priceHandedOff =
+  (readJan.priceConversations * readJan.priceHandedOffPct) / 100 + priceOct.reduce((a, o) => a + o.transferred, 0);
+
+export const read = {
+  withRequest,
+  withRequestJan: readJan.withRequest,
+  withRequestOct: oct.inboundReal,
+  secondRead: readJan.secondRead + 160,
+  secondReadJan: readJan.secondRead,
+  secondReadOct: 160,
+  processAgreementPct: readJan.processAgreementPct,
+  priceConversations,
+  priceConversationsPct: Math.round((priceConversations / withRequest) * 100),
+  priceStartedElsewherePct: readJan.priceStartedElsewherePct, // Jan-Feb only
+  priceHandedOffPct: Math.round((priceHandedOff / priceConversations) * 100),
+  topFivePct: Math.round(processes.slice(0, 5).reduce((a, p) => a + p.share, 0)),
+  priceDecisionInTierCPct: Math.round(
+    (((readJan.priceDecisionInTierCPct / 100) * tiersJan[2].calls + oct.tierCPriceDecision) / tierCalls.C) * 100,
+  ),
+  // Long tail: business enquiries (0.1% of Jan-Feb, plus October's commercial calls).
+  businessPct:
+    Math.round(((readJan.withRequest * 0.001 + oct.inboundReal - Object.values(octProc).reduce((a, o) => a + o.calls, 0)) / withRequest) * 1000) / 10,
+};
+
 export const tiers: {
   tier: Tier;
   pct: number;
@@ -258,76 +392,50 @@ export const tiers: {
   body: string;
   includes: string[];
   review?: string;
-}[] = [
-  {
-    tier: "A",
-    pct: 40,
-    calls: 2253,
-    title: "Voice AI contains it end to end",
-    body: "",
-    includes: [
-      "Price quotes and coverage",
-      "Closing an account",
-      "New household sign-ups",
-      "Card payments and arrears",
-      "Balance, bills and direct debit",
-      "Returned calls",
-    ],
-  },
-  {
-    tier: "B",
-    pct: 21,
-    calls: 1215,
-    title: "AI takes the intake and the standard case",
-    body: "The AI runs the standard steps and one part goes to a person: an operations booking it can't see, paperwork, consent, or a bereaved caller.",
-    includes: [
-      "House moves and new holders",
-      "New-customer bin delivery",
-      "Missed collections",
-      "Bereavement",
-      "Bin repairs and swaps",
-    ],
-  },
-  {
-    tier: "C",
-    pct: 39,
-    calls: 2189,
-    title: "Agent intake, then human-led",
-    body: "The AI verifies the caller and gathers the account, usage and contract end date, then a person makes the call on rates, credits, price-matches and save offers. 63% of these calls ended with one.",
-    review:
-      "Provisional. How much of Tier C is a genuine price decision, and how much the agent could resolve itself, is open for review. We will work through where each intent sits with Panda once we have full data and API access.",
-    includes: [
-      "Plan and price reviews",
-      "Disputes, refunds and complaints",
-      "Cancelling to switch provider",
-      "Free months to win a prospect",
-    ],
-  },
-];
+}[] = TIER_COPY.map((t, i) => ({
+  tier: t.tier,
+  pct: tierPct[i],
+  calls: tierCalls[t.tier],
+  title: t.title,
+  body: t.tier === "C" ? `${t.body} ${read.priceDecisionInTierCPct}% of these calls ended with one.` : t.body,
+  includes: [...processes.filter((p) => p.tier === t.tier).map((p) => INCLUDE[p.key]), ...(t.extra ?? [])],
+  review: t.review,
+}));
 
-export const scenarios = {
-  Conservative: {
-    contained: 28,
-    containedCalls: 1564,
-    assisted: 56,
-    assistedCalls: 3140,
-    note: "Floor case. Assumes voice friction, imperfect authentication and cautious escalation thresholds.",
-  },
-  Base: {
-    contained: 39,
-    containedCalls: 2227,
-    assisted: 63,
-    assistedCalls: 3544,
-    note: "The planning figure, given how much of the work follows a fixed rule and how often the same ID check opens the call.",
-  },
-  Optimistic: {
-    contained: 49,
-    containedCalls: 2796,
-    assisted: 79,
-    assistedCalls: 4453,
-    note: "Assumes clean system access, mature AOPs and time spent tuning against your own call log.",
-  },
-} as const;
+// Containment coefficients per tier: [Tier A, Tier B, Tier C].
+const COEFF = {
+  Conservative: { contained: [0.6, 0.175, 0], assisted: [1, 0.73, 0] },
+  Base: { contained: [0.8, 0.35, 0], assisted: [1, 1, 0.035] },
+  Optimistic: { contained: [0.95, 0.54, 0], assisted: [1, 1, 0.45] },
+};
+const NOTES = {
+  Conservative: "Floor case. Assumes voice friction, imperfect authentication and cautious escalation thresholds.",
+  Base: "The planning figure, given how much of the work follows a fixed rule and how often the same ID check opens the call.",
+  Optimistic: "Assumes clean system access, mature AOPs and time spent tuning against your own call log.",
+};
+const apply = (c: number[]) => TIERS.reduce((a, t, i) => a + tierCalls[t] * c[i], 0);
+export const scenarios = Object.fromEntries(
+  (Object.keys(COEFF) as (keyof typeof COEFF)[]).map((name) => {
+    const containedCalls = Math.round(apply(COEFF[name].contained));
+    const assistedCalls = Math.round(apply(COEFF[name].assisted));
+    return [
+      name,
+      {
+        contained: Math.round((containedCalls / withRequest) * 100),
+        containedCalls,
+        assisted: Math.round((assistedCalls / withRequest) * 100),
+        assistedCalls,
+        note: NOTES[name],
+      },
+    ];
+  }),
+) as Record<keyof typeof COEFF, { contained: number; containedCalls: number; assisted: number; assistedCalls: number; note: string }>;
+
+// Both samples, inbound: share passed to a second agent. Jan-Feb from Talkdesk agent
+// changes; October counted by person from the recordings.
+export const passedToSecondAgentPct = Math.round(
+  (((measured.passedToSecondAgentPct / 100) * measured.inbound + oct.inboundRealTransferred) / (measured.inbound + oct.inboundAll)) * 100,
+);
 
 export type ScenarioName = keyof typeof scenarios;
 

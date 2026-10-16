@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { CountUp, PawDots, Reveal } from "@/components/ui";
-import { measured, read, scenarios } from "@/lib/data";
+import { measured, passedToSecondAgentPct, read, scenarios } from "@/lib/data";
 import { october } from "@/lib/october";
 
 const STATS = [
   { value: measured.inbound + october.calls, suffix: "", label: "calls read in full", decimals: 0 },
-  { value: Math.round(measured.passedToSecondAgentPct), suffix: "%", label: "passed to a second agent", decimals: 0 },
+  { value: passedToSecondAgentPct, suffix: "%", label: "of inbound calls passed to a second agent", decimals: 0 },
   { value: read.priceConversationsPct, suffix: "%", label: "are price conversations", decimals: 0 },
   { value: scenarios.Base.contained, suffix: "%", prefix: "≈", label: "could be contained by an AI agent (estimate)", decimals: 0 },
 ];

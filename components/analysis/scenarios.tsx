@@ -19,7 +19,7 @@ export function Scenarios() {
           title="How much a voice agent takes off the floor."
           lead={`Of the ${read.withRequest.toLocaleString(
             "en-IE",
-          )} inbound calls with a real request. Tier shares come from reading every call; the containment rates behind each scenario are our stated assumptions.`}
+          )} inbound calls with a real request, across both samples. Tier shares come from reading every call; the containment rates behind each scenario are our stated assumptions.`}
         />
 
         <Reveal className="mt-10">

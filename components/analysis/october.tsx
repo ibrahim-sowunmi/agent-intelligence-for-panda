@@ -1,5 +1,5 @@
 import { Reveal, SectionHeading, TierLegend } from "@/components/ui";
-import { processes, tiers, TIER_COLOR, type Tier } from "@/lib/data";
+import { processesJan, tiersJan, TIER_COLOR, type Tier } from "@/lib/data";
 import { october } from "@/lib/october";
 
 const LABEL: Record<string, string> = {
@@ -22,13 +22,13 @@ const LABEL: Record<string, string> = {
 const fmt = (n: number) => n.toLocaleString("en-IE");
 
 export function October() {
-  const jan = Object.fromEntries(processes.map((p) => [p.key, p.share]));
+  const jan = Object.fromEntries(processesJan.map((p) => [p.key, p.share]));
   const oct = october.processShare as Record<string, number>;
   const rows = Object.keys(LABEL)
     .map((k) => ({ key: k, label: LABEL[k], jan: jan[k] ?? 0, oct: oct[k] ?? 0 }))
     .sort((a, b) => Math.max(b.jan, b.oct) - Math.max(a.jan, a.oct));
   const max = Math.max(...rows.flatMap((r) => [r.jan, r.oct]));
-  const janTier = Object.fromEntries(tiers.map((t) => [t.tier, t.pct])) as Record<Tier, number>;
+  const janTier = Object.fromEntries(tiersJan.map((t) => [t.tier, t.pct])) as Record<Tier, number>;
   const octTier = october.tier as Record<Tier, number>;
 
   const tiles = [

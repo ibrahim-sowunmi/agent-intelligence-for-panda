@@ -1,11 +1,12 @@
 import { Reveal, SectionHeading } from "@/components/ui";
-import { measured } from "@/lib/data";
+import { measured, read } from "@/lib/data";
+import { october } from "@/lib/october";
 
 const STEPS = [
   {
     n: "01",
     title: "Authenticate",
-    body: `Account number, the phone on the account, or the Eircode. ${measured.idCheckPct}% of inbound calls open here, and ${measured.noAccountNumberPct}% of callers don't have their account number to hand.`,
+    body: `Account number, the phone on the account, or the Eircode. In the January transcripts ${measured.idCheckPct}% of inbound calls open here, and ${measured.noAccountNumberPct}% of callers don't have their account number to hand.`,
   },
   {
     n: "02",
@@ -54,9 +55,9 @@ export function Journey() {
             <div className="h-full rounded-3xl bg-paper p-7 ring-1 ring-line">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-muted">Where the pattern differs</p>
               <p className="mt-4 text-lg leading-relaxed text-ink">
-                <strong className="font-semibold text-forest">Tier C gets a warm hand-off, not a bot.</strong> Three in ten calls are price
-                conversations only Loyalty can have, and callers repeat their details after the transfer today. Gather the account, usage and
-                contract end date first.
+                <strong className="font-semibold text-forest">Tier C gets a warm hand-off, not a bot.</strong> {read.priceConversationsPct}% of
+                calls are price conversations only Loyalty can have, and callers repeat their details after the transfer today. Gather the
+                account, usage and contract end date first.
               </p>
             </div>
           </Reveal>
@@ -64,9 +65,10 @@ export function Journey() {
             <div className="h-full rounded-3xl bg-forest p-7 text-white">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-panda">Currently underserved</p>
               <p className="mt-4 text-lg leading-relaxed text-white/90">
-                <strong className="font-semibold text-white">Take over the callbacks, 24/7.</strong> 12% of transcribed calls are agents ringing
-                customers back, and one in five of those reaches voicemail. Closures and reactivations that wait on a callback today can simply be
-                scheduled.
+                <strong className="font-semibold text-white">Take over the callbacks, 24/7.</strong> {Math.round(october.outboundPct)}% of the
+                October recordings are agents ringing customers back, and {Math.round(october.outboundNoContactPct)}% of those reach no one (12%
+                of January&apos;s transcripts, one in five to voicemail). Missed-collection updates, payment chasers and closures that wait on a
+                callback today can simply be scheduled.
               </p>
             </div>
           </Reveal>

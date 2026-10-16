@@ -2,7 +2,7 @@
 
 import { useMemo, useRef, useState } from "react";
 import { Reveal, SectionHeading, TierLegend } from "@/components/ui";
-import { processes, read, TIER_COLOR, TIER_NAME, type Process } from "@/lib/data";
+import { processes, read, TIER_COLOR, TIER_NAME, type CombinedProcess as Process } from "@/lib/data";
 
 type Sort = "share" | "tier";
 
@@ -36,7 +36,7 @@ export function ProcessChart() {
         <SectionHeading
           eyebrow="Intent breakdowns"
           title="Where the volume sits."
-          lead="What each caller needed. The colour shows which tier most of those calls fall into."
+          lead={`What each caller needed, across both samples: ${read.withRequest.toLocaleString("en-IE")} inbound calls with a real request. The colour shows which tier most of those calls fall into.`}
         />
 
         <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_340px]">
@@ -74,7 +74,8 @@ export function ProcessChart() {
                         <th className="py-2 pr-4 font-semibold">Process</th>
                         <th className="py-2 pr-4 text-right font-semibold">Share</th>
                         <th className="py-2 pr-4 text-right font-semibold">Calls</th>
-                        <th className="py-2 pr-4 text-right font-semibold">Median turns</th>
+                        <th className="py-2 pr-4 text-right font-semibold">Median turns (Jan)</th>
+                        <th className="py-2 pr-4 text-right font-semibold">Median min (Oct)</th>
                         <th className="py-2 font-semibold">Tier</th>
                       </tr>
                     </thead>
@@ -85,6 +86,7 @@ export function ProcessChart() {
                           <td className="py-2.5 pr-4 text-right font-semibold">{p.share.toFixed(1)}%</td>
                           <td className="py-2.5 pr-4 text-right">{p.calls.toLocaleString("en-IE")}</td>
                           <td className="py-2.5 pr-4 text-right">{p.turns}</td>
+                          <td className="py-2.5 pr-4 text-right">{p.medianMinOct}</td>
                           <td className="py-2.5 text-ink-2">{TIER_NAME[p.tier]}</td>
                         </tr>
                       ))}
@@ -124,7 +126,7 @@ export function ProcessChart() {
                       </li>
                     ))}
                   </ul>
-                  <p className="mt-4 text-xs text-muted">Long tail: business enquiries, 0.1%.</p>
+                  <p className="mt-4 text-xs text-muted">Long tail: business enquiries, {read.businessPct}%.</p>
 
                   {hover ? (
                     <div
@@ -138,9 +140,11 @@ export function ProcessChart() {
                         <dd className="text-right font-semibold">{hover.p.share.toFixed(1)}%</dd>
                         <dt className="text-white/70">Calls</dt>
                         <dd className="text-right font-semibold">{hover.p.calls.toLocaleString("en-IE")}</dd>
-                        <dt className="text-white/70">Median turns</dt>
+                        <dt className="text-white/70">Median turns (Jan)</dt>
                         <dd className="text-right font-semibold">{hover.p.turns}</dd>
-                        <dt className="text-white/70">Passed on today</dt>
+                        <dt className="text-white/70">Median min (Oct)</dt>
+                        <dd className="text-right font-semibold">{hover.p.medianMinOct}</dd>
+                        <dt className="text-white/70">Passed to a 2nd agent</dt>
                         <dd className="text-right font-semibold">{hover.p.handoffPct}%</dd>
                       </dl>
                       <p className="mt-3 border-t border-white/15 pt-3 text-xs italic leading-relaxed text-white/80">
@@ -162,9 +166,9 @@ export function ProcessChart() {
                 <p className="mt-4 font-display text-6xl font-semibold">{read.priceConversationsPct}%</p>
                 <p className="mt-2 font-display text-xl font-semibold">Price conversations, all routes combined</p>
                 <p className="mt-3 text-sm leading-relaxed text-white/75">
-                  {read.priceConversations.toLocaleString("en-IE")} plan and price reviews and price-driven cancellations.{" "}
-                  {read.priceStartedElsewherePct}% started as a different question, and {read.priceHandedOffPct}% were passed to a second
-                  agent.
+                  {read.priceConversations.toLocaleString("en-IE")} plan and price reviews and price-driven cancellations across both samples,
+                  and {read.priceHandedOffPct}% were passed to a second agent. In January, {read.priceStartedElsewherePct}% started as a
+                  different question.
                 </p>
               </div>
             </Reveal>

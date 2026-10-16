@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { Reveal, SectionHeading, TierLegend } from "@/components/ui";
-import { processes, read, TIER_COLOR, type Process, type Tier } from "@/lib/data";
+import { processes, read, TIER_COLOR, type CombinedProcess as Process, type Tier } from "@/lib/data";
 
 const FILTERS: (Tier | "all")[] = ["all", "A", "B", "C"];
 
@@ -127,8 +127,9 @@ export function Evidence() {
             </div>
 
             <p className="mt-6 border-t border-line pt-4 text-xs leading-relaxed text-muted">
-              Every inbound call read; tiers checked against {read.secondRead} calls read a second time by a stronger model, and corrected
-              per process where the first reader leaned cautious. Long tail: business enquiries, 0.1%.
+              Every inbound call in both samples read. Tiers checked against {read.secondReadJan} January calls and {read.secondReadOct}{" "}
+              October calls read a second time by a stronger model; the January tiers were corrected per process where the first reader
+              leaned cautious. Long tail: business enquiries, {read.businessPct}%.
             </p>
           </div>
         </Reveal>

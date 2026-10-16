@@ -344,6 +344,156 @@ export const october = {
       "repeat": 42.9
     }
   ],
+  "counts": {
+    "inboundAll": 2135,
+    "inboundReal": 2005,
+    "inboundRealTransferred": 391,
+    "tier": {
+      "A": 863,
+      "B": 733,
+      "C": 409
+    },
+    "tierCPriceDecision": 253,
+    "outboundAll": 854,
+    "medianMin": 5.6,
+    "p90Min": 16.9,
+    "processes": {
+      "delivery": {
+        "calls": 39,
+        "A": 16,
+        "B": 21,
+        "C": 2,
+        "priceDecision": 0,
+        "transferred": 5,
+        "medianSecs": 426
+      },
+      "pay": {
+        "calls": 414,
+        "A": 262,
+        "B": 120,
+        "C": 32,
+        "priceDecision": 25,
+        "transferred": 71,
+        "medianSecs": 298.5
+      },
+      "admin": {
+        "calls": 394,
+        "A": 303,
+        "B": 78,
+        "C": 13,
+        "priceDecision": 10,
+        "transferred": 41,
+        "medianSecs": 373.0
+      },
+      "cancel_move": {
+        "calls": 61,
+        "A": 26,
+        "B": 21,
+        "C": 14,
+        "priceDecision": 7,
+        "transferred": 41,
+        "medianSecs": 667
+      },
+      "binchange": {
+        "calls": 132,
+        "A": 58,
+        "B": 67,
+        "C": 7,
+        "priceDecision": 7,
+        "transferred": 11,
+        "medianSecs": 396.0
+      },
+      "billing_dispute": {
+        "calls": 137,
+        "A": 4,
+        "B": 11,
+        "C": 122,
+        "priceDecision": 46,
+        "transferred": 31,
+        "medianSecs": 765
+      },
+      "missed": {
+        "calls": 454,
+        "A": 108,
+        "B": 323,
+        "C": 23,
+        "priceDecision": 7,
+        "transferred": 21,
+        "medianSecs": 424.0
+      },
+      "price_review": {
+        "calls": 147,
+        "A": 6,
+        "B": 4,
+        "C": 137,
+        "priceDecision": 112,
+        "transferred": 92,
+        "medianSecs": 902
+      },
+      "signup": {
+        "calls": 58,
+        "A": 19,
+        "B": 31,
+        "C": 8,
+        "priceDecision": 9,
+        "transferred": 27,
+        "medianSecs": 1089.5
+      },
+      "cancel_switch": {
+        "calls": 32,
+        "A": 0,
+        "B": 2,
+        "C": 30,
+        "priceDecision": 22,
+        "transferred": 23,
+        "medianSecs": 892.5
+      },
+      "bereavement": {
+        "calls": 7,
+        "A": 0,
+        "B": 5,
+        "C": 2,
+        "priceDecision": 1,
+        "transferred": 3,
+        "medianSecs": 1166
+      },
+      "tenancy": {
+        "calls": 68,
+        "A": 19,
+        "B": 43,
+        "C": 6,
+        "priceDecision": 6,
+        "transferred": 15,
+        "medianSecs": 530.5
+      },
+      "returned_call": {
+        "calls": 13,
+        "A": 11,
+        "B": 2,
+        "C": 0,
+        "priceDecision": 0,
+        "transferred": 0,
+        "medianSecs": 146
+      },
+      "quote": {
+        "calls": 42,
+        "A": 27,
+        "B": 3,
+        "C": 12,
+        "priceDecision": 12,
+        "transferred": 9,
+        "medianSecs": 778.0
+      }
+    },
+    "handoffTeamShare": {
+      "loyalty": 39.0,
+      "sales": 12.0,
+      "customer_service": 22.9,
+      "credit_control": 12.8,
+      "unknown": 13.1,
+      "operations": 0.2
+    }
+  },
   "handoff": {
     "transferredCalls": 406,
     "transferredPct": 16.6,

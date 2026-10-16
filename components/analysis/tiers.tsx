@@ -13,9 +13,9 @@ export function Tiers() {
           id="tiers"
           eyebrow="Assumed · open to additional scoping"
           title="Three tiers of automatability"
-          lead={`Every inbound call read and judged on one question: could an AI agent, with the same systems your agents use and your rules written down, have finished it? ${read.withRequest.toLocaleString(
+          lead={`Every inbound call read and judged on one question: could an AI agent, with the same systems your agents use and your rules written down, have finished it? ${read.withRequest.toLocaleString("en-IE")} calls had a real request: ${read.withRequestJan.toLocaleString(
             "en-IE",
-          )} calls had a real request.`}
+          )} from the January transcripts and ${read.withRequestOct.toLocaleString("en-IE")} from the October recordings.`}
         />
 
         <Reveal className="mt-12">

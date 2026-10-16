@@ -85,6 +85,7 @@ const PANDA_TIERS = [
     tier: "B" as const,
     title: "Do the intake, hand off warm",
     points: [
+      "Missed-collection checks answered from route and lift data, not an email to the depot",
       "Operations requests raised with the caller's details and a summary attached",
       "Tenancy and bereavement paperwork collected and logged before a person picks it up",
       "Watchtower flags vulnerable callers for a human on the next turn",
@@ -255,7 +256,7 @@ export default function PlatformPage() {
             id="for-panda"
             eyebrow="Mapped to Panda's calls"
             title="What Decagon does in each tier."
-            lead="The three tiers come from reading every inbound call in your transcripts."
+            lead="The three tiers come from reading every inbound call in your January transcripts and October call recordings."
           />
           <div className="mt-12 grid gap-5 lg:grid-cols-3">
             {PANDA_TIERS.map((t, i) => {
