@@ -1,18 +1,19 @@
 import { Reveal } from "@/components/ui";
 import { measured } from "@/lib/data";
+import { october } from "@/lib/october";
 
 const ROWS = [
   {
     tag: "Measured",
     color: "bg-forest text-white",
-    source: "From the Talkdesk transcript export",
-    body: `Every one of the ${measured.totalCalls.toLocaleString("en-IE")} calls: counts, inbound and outbound split, turns per call, hand-offs between agents, which queue answered.`,
+    source: "From the transcripts and the recordings",
+    body: `Every one of the ${measured.totalCalls.toLocaleString("en-IE")} Jan–Feb transcripts and the ${october.calls.toLocaleString("en-IE")} October recordings: counts, inbound and outbound split, call length, recorded parts per call, which queue answered.`,
   },
   {
     tag: "Inferred",
     color: "bg-white text-forest ring-1 ring-line",
     source: "Read from the conversations",
-    body: "What each call was about, and whether an AI agent could have finished it. Every inbound call read in full by an AI reviewer.",
+    body: "What each call was about, whether an AI agent could have finished it, and who handled each part of it. Every call read in full by an AI reviewer, with a sample read again by a stronger model.",
   },
   {
     tag: "Assumed",

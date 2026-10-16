@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { CountUp, PawDots, Reveal } from "@/components/ui";
 import { measured, read, scenarios } from "@/lib/data";
+import { october } from "@/lib/october";
 
 const STATS = [
-  { value: measured.inbound, suffix: "", label: "inbound calls read in full", decimals: 0 },
+  { value: measured.inbound + october.calls, suffix: "", label: "calls read in full", decimals: 0 },
   { value: Math.round(measured.passedToSecondAgentPct), suffix: "%", label: "passed to a second agent", decimals: 0 },
   { value: read.priceConversationsPct, suffix: "%", label: "are price conversations", decimals: 0 },
   { value: scenarios.Base.contained, suffix: "%", prefix: "≈", label: "could be contained by an AI agent (estimate)", decimals: 0 },
@@ -24,7 +25,7 @@ export function Hero() {
         </Reveal>
         <Reveal delay={160}>
           <p className="mt-7 max-w-2xl text-lg leading-relaxed text-white/75 sm:text-xl">
-            Built from your own Talkdesk transcripts, 2 January to 4 February 2026.
+            Built from your own Talkdesk transcripts, 2 January to 4 February 2026, and 2,991 call recordings from 13 to 15 October 2026.
           </p>
         </Reveal>
         <Reveal delay={220}>
