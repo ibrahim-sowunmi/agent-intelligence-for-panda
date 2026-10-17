@@ -28,17 +28,17 @@ const PILLARS = [
     stage: "Build",
     title: "Build your agent quickly and collaboratively",
     items: [
-      ["Agent Operating Procedures", "Agent logic written in natural language, compiled into reliable structured workflows. Duet offers best-practice guidance as you write."],
+      ["Agent Operating Procedures", "Agent logic written in plain English, so no engineering background is needed. Decagon University and your agent team train Panda to own it."],
       ["Seamless integration", "Connects to ticketing, CRMs, knowledge bases, CCaaS providers and custom systems. Your telephony stays where it is."],
-      ["Guardrails and guidelines", "Secure, on-brand execution of sensitive steps like identity verification, payments and refunds."],
+      ["Guardrails and permissions", "Roles set who can edit, who can stage and who can publish. Identity checks, payments and refunds run inside fixed rules."],
     ],
   },
   {
     stage: "Optimize",
     title: "Optimize performance at every step",
     items: [
-      ["Testing and simulations", "Simulated conversations and unit tests against real customer personas before anything ships."],
-      ["Versioning and experiments", "Git-based versioning and live A/B tests of workflow updates against real conversations."],
+      ["Testing and simulations", "Every change runs through simulated end-to-end conversations, with pass criteria, before anyone signs it off."],
+      ["Versioning and approvals", "Changes live on their own branch and pass an approval workflow before they go live. Live A/B tests compare versions on real calls."],
       ["Transparent observability", "Step-by-step traces of model calls, workflow triggers and the knowledge each answer referenced."],
     ],
   },
@@ -46,9 +46,9 @@ const PILLARS = [
     stage: "Scale",
     title: "Scale outcomes with granular insights",
     items: [
-      ["Diagnostic tools", "AI-driven recommendations across your knowledge base, workflow design and tooling."],
+      ["Duet Autopilot", "Each week Duet drafts and tests the fixes worth making. Your team reviews and approves them, not tunes full-time."],
       ["Voice of Customer", "Every conversation tagged by intent, with the friction points that should shape your roadmap."],
-      ["Watchtower", "Always-on QA that reviews 100% of conversations against your own criteria. Nothing is sampled."],
+      ["Watchtower", "Always-on QA that can review every call against your own criteria, so nobody has to sample by hand."],
     ],
   },
 ];

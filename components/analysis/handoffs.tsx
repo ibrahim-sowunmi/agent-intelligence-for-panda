@@ -125,10 +125,6 @@ export function Handoffs() {
                     </li>
                   ))}
                 </ul>
-                <p className="mt-5 text-sm leading-relaxed text-ink-2">
-                  Calls that reach a second person are {pct(h.transferredPct)} of calls but{" "}
-                  <strong className="font-semibold text-forest">{Math.round(h.minutesSharePct)}% of the minutes</strong> on the phone.
-                </p>
               </div>
             </Reveal>
             <Reveal delay={140}>

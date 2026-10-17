@@ -33,7 +33,7 @@ export function October() {
 
   const tiles = [
     { value: fmt(october.calls), label: "Recorded calls", note: `${october.hours} hours of audio, read in full` },
-    { value: `${Math.round(october.outboundPct)}%`, label: "Are Panda calling out", note: `${Math.round(october.outboundNoContactPct)}% of those reach no one` },
+    { value: `${Math.round(october.outboundPct)}%`, label: "Are Panda Outbound calls", note: `${Math.round(october.outboundNoContactPct)}% of those reach no one` },
     { value: `${Math.round(october.repeatPct)}%`, label: "Are repeat contacts", note: "the caller has already rung or emailed about it" },
     { value: `${Math.round(october.resolved.Y)}%`, label: "Resolved on the call", note: `${Math.round(october.resolved.partial)}% end with a booking or a callback` },
   ];
@@ -45,7 +45,7 @@ export function October() {
           id="october"
           eyebrow="Second sample · 13–15 October 2026 · call recordings"
           title="A second read, from the recordings."
-          lead={`We transcribed ${october.hours} hours of Panda's own call audio and read every call the same way. What callers need moves with the season: January is renewal season, and mid-October leaned operational. The share an AI agent could finish end to end held steady.`}
+          lead={`We transcribed ${october.hours} hours of Panda's own call audio and read every call the same way. The share an AI agent could finish end to end held steady.`}
         />
 
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -119,15 +119,11 @@ export function October() {
                     </div>
                   </div>
                 ))}
-                <p className="mt-5 text-sm leading-relaxed text-ink-2">
-                  Tier A barely moves. October swaps price conversations for missed collections, so the work shifts from Tier C into Tier B: the
-                  agent can take the call, but someone has to see the truck.
-                </p>
               </div>
             </Reveal>
             <Reveal delay={140}>
               <div className="rounded-3xl bg-forest p-6 text-white sm:p-7">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-panda">Panda calling out</p>
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-panda">Panda Outbound</p>
                 <p className="mt-3 font-display text-5xl font-semibold">{fmt(october.outboundAll)}</p>
                 <p className="mt-1 text-sm text-white/70">
                   outbound recordings in three days, and {Math.round(october.outboundNoContactPct)}% reached voicemail or no one
@@ -148,7 +144,6 @@ export function October() {
         <Reveal className="mt-6">
           <div className="rounded-3xl bg-mint p-6 sm:p-8">
             <p className="font-semibold text-forest">When a person was needed, the reason</p>
-            <p className="mt-1 text-sm text-ink-2">Share of October inbound calls. A new tag, read from each conversation.</p>
             <ul className="mt-6 grid gap-x-10 gap-y-3 md:grid-cols-2">
               {october.blockers.map((b) => (
                 <li key={b.key} className="grid grid-cols-[1fr_56px] items-center gap-3 text-sm">
@@ -160,10 +155,6 @@ export function October() {
                 </li>
               ))}
             </ul>
-            <p className="mt-6 text-sm leading-relaxed text-ink-2">
-              The biggest blocker isn&apos;t judgement. It&apos;s visibility: agents emailing operations to find out whether a truck has been,
-              then promising a callback. Connected to the route and lift data, an agent answers that on the first call.
-            </p>
           </div>
         </Reveal>
       </div>

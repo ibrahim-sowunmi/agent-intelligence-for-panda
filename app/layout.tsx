@@ -17,7 +17,6 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   applicationName: TITLE,
   robots: { index: false, follow: false },
-  icons: { icon: "/brand/panda-paw.png", apple: "/brand/panda-paw.png" },
   openGraph: {
     type: "website",
     siteName: "Decagon for Panda",
